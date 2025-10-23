@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Plugin strings are defined here.
@@ -25,11 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Calculator';
-$string['simple_calculator:addinstance'] = 'Add a new calculator block';
-$string['simple_calculator:myaddinstance'] = 'Add a new calculator block to dashboard';
-$string['privacy:metadata'] = 'The Simple Calculator block only displays the live calculation of the given values.';
 $string['displaymode'] = 'Display mode';
 $string['displaymode_10'] = 'Inline';
 $string['displaymode_20'] = 'Popup';
 $string['opencalculator'] = 'Open the calculator';
+$string['pluginname'] = 'Calculator';
+$string['privacy:metadata'] = 'The Simple Calculator block only displays the live calculation of the given values.';
+$string['simple_calculator:addinstance'] = 'Add a new calculator block';
+$string['simple_calculator:myaddinstance'] = 'Add a new calculator block to dashboard';

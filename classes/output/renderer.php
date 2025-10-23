@@ -12,7 +12,8 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Block simple calculator renderer.
  *
@@ -23,12 +24,14 @@
 
 namespace block_simple_calculator\output;
 
+use plugin_renderer_base;
+
 defined('MOODLE_INTERNAL') || die;
 
-class renderer extends \plugin_renderer_base {
+class renderer extends plugin_renderer_base {
 
     public function render_calculator() {
-        $data = array();
+        $data = [];
         return parent::render_from_template('block_simple_calculator/simple_calculator', $data);
     }
 }

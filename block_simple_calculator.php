@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Block simple calculator is defined here.
@@ -50,10 +50,10 @@ class block_simple_calculator extends block_base {
     public function get_required_javascript() {
         parent::get_required_javascript();
 
-        $this->page->requires->js_call_amd('block_simple_calculator/simple_calculator', 'init', array());
+        $this->page->requires->js_call_amd('block_simple_calculator/simple_calculator', 'init', []);
 
         if (!empty($this->config->displaymode) && $this->config->displaymode == self::DISPLAYMODE_POPUP) {
-            $this->page->requires->js_call_amd('block_simple_calculator/calculatorpopup', 'init', array());
+            $this->page->requires->js_call_amd('block_simple_calculator/calculatorpopup', 'init');
         }
     }
 
@@ -112,7 +112,7 @@ class block_simple_calculator extends block_base {
      * @return string[] Array of pages and permissions.
      */
     public function applicable_formats() {
-        return array('all' => true);
+        return ['all' => true];
     }
 
     /**
