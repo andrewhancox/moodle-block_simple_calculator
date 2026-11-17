@@ -91,30 +91,27 @@ export const init = () => {
 
     document.addEventListener('keydown', handleKey);
 
-    Templates.render('block_simple_calculator/simple_calculator', {}).then((calculator) => {
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#block-calculator-output-popupbutton')) {
-                return;
-            }
-            e.preventDefault();
-            e.stopPropagation();
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#block-calculator-output-popupbutton')) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
 
-            ModalFactory.create({
-                title: '',
-                body: calculator,
-                type: ModalFactory.types.DEFAULT,
-            }).then((modal) => {
-                modal.show();
-                makeDraggable(modal.getRoot()[0]);
+        ModalFactory.create({
+            title: '',
+            body: Templates.render('block_simple_calculator/simple_calculator', {}),
+            type: ModalFactory.types.DEFAULT,
+        }).then((modal) => {
+            modal.show();
+            makeDraggable(modal.getRoot()[0]);
 
-                // Modal events are fired through the modal's own API, so listen with it too.
-                modal.getRoot().on(ModalEvents.hidden, () => {
-                    document.querySelectorAll('[data-keybinding="Delete"]').forEach((button) => button.click());
-                    modal.destroy();
-                });
-                return modal;
-            }).catch(Notification.exception);
-        });
-        return calculator;
-    }).catch(Notification.exception);
+            // Modal events are fired through the modal's own API, so listen with it too.
+            modal.getRoot().on(ModalEvents.hidden, () => {
+                document.querySelectorAll('[data-keybinding="Delete"]').forEach((button) => button.click());
+                modal.destroy();
+            });
+            return modal;
+        }).catch(Notification.exception);
+    });
 };
