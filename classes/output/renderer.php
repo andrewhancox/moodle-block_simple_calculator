@@ -19,6 +19,7 @@
  *
  * @package     block_simple_calculator
  * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @copyright   2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,6 +32,7 @@ use plugin_renderer_base;
  *
  * @package     block_simple_calculator
  * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @copyright   2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends plugin_renderer_base {

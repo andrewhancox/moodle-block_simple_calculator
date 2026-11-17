@@ -19,6 +19,7 @@
  *
  * @package     block_simple_calculator
  * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @copyright   2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,6 +31,7 @@ use core_privacy\local\metadata\null_provider;
  * Privacy Subsystem for block_simple_calculator implementing null_provider.
  *
  * @copyright  2020 A K M Safat Shahin
+ * @copyright  2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements null_provider {

@@ -20,6 +20,7 @@
  * @package     block_simple_calculator
  * @category    string
  * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @copyright   2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
