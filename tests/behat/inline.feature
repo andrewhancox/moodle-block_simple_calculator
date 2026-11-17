@@ -22,7 +22,7 @@ Feature: Use the calculator block inline in the sidebar of an activity
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
     And I am on the "Test page" "page activity" page
-    And I add the "Calculator" block to the "default" region
+    And I add the "Calculator" block
     And I configure the "Calculator" block
     And I set the field "Display mode" to "Inline"
     And I press "Save changes"
