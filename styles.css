@@ -1,21 +1,9 @@
+/* Bootstrap has no CSS grid utilities that work in both Bootstrap 4 and 5, so lay the keypad out here. */
 .block-calculator-grid {
     display: grid;
-    justify-content: center;
-    align-content: center;
-    grid-template-columns: repeat(4, 80px);
-    grid-template-rows: minmax(80px, auto) repeat(5, 80px);
-}
-
-.block-calculator-grid > button {
-    cursor: pointer;
-    font-size: 1rem;
-    border: 1px solid white;
-    outline: none;
-    background-color: #f7f7f9;
-}
-
-.block-calculator-grid > button:hover {
-    background-color: lightgrey;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .25rem;
+    max-width: 20rem;
 }
 
 .block-calculator-span-two {
@@ -24,38 +12,20 @@
 
 .block-calculator-output {
     grid-column: 1 / -1;
-    background-color: rgba(0, 0, 0, .75);
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-around;
-    flex-direction: column;
-    padding: 10px;
-    word-wrap: break-word;
-    word-break: break-all;
-    border: 1px solid white;
+    min-height: 4.5rem;
 }
 
-.block-calculator-output .block-calculator-previous-operand {
-    color: rgba(255, 255, 255, .75);
-    font-size: 1rem;
-}
-
-.block-calculator-output .block-calculator-current-operand {
-    color: white;
-    font-size: 1rem;
-}
-
+/* Bootstrap 4 has no bottom/end position utilities, so place the popup button here. */
 #block-calculator-output-popupbutton {
-    display: block;
-    position: fixed;
     bottom: 75px;
-    right: 0; }
-#block-calculator-output-popupbutton a {
-    position: absolute;
     right: 0;
-    transform: translateY(-100%); }
+}
+
+/* Core caps icon sizes, and the pix helper can't add a size class. */
 #block-calculator-output-popupbutton .icon {
-    font-size: 64px;
     width: 64px;
     height: 64px;
+    max-width: none;
+    max-height: none;
+    margin: 0;
 }

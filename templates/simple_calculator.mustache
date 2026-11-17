@@ -1,30 +1,58 @@
 {{!
-    This is the mustache for the time block simple calculator.
-    @template block_simple_calculator/simple_calculator
-    This template renders the entire block content.
-}}
+    This file is part of Moodle - https://moodle.org/
 
-<div class="block-calculator-grid">
-    <div class="block-calculator-output">
-        <div id="data-block-calculator-previous-operand" class="block-calculator-previous-operand"></div>
-        <div id="data-block-calculator-current-operand" class="block-calculator-current-operand"></div>
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_simple_calculator/simple_calculator
+
+    The calculator display and keypad, used both inline in the block and in the popup.
+
+    Classes required for JS:
+    * data-calculator-number, data-calculator-operation, data-calculator-equals,
+      data-calculator-all-clear and data-calculator-delete identify each kind of button.
+
+    Data attributes required for JS:
+    * data-keybinding - the keyboard key that presses the button in popup mode.
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {}
+}}
+<div class="block-calculator-grid mx-auto">
+    <div class="block-calculator-output d-flex flex-column align-items-end justify-content-end bg-dark text-white rounded p-2 text-break">
+        <div id="data-block-calculator-previous-operand" class="small text-white-50"></div>
+        <div id="data-block-calculator-current-operand" class="h4 mb-0" aria-live="polite"></div>
     </div>
-    <button class="data-calculator-all-clear block-calculator-span-two" data-keybinding="Delete">AC</button>
-    <button class="data-calculator-delete" data-keybinding="Backspace">DEL</button>
-    <button class="data-calculator-operation" data-keybinding="/">÷</button>
-    <button class="data-calculator-number" data-keybinding="1">1</button>
-    <button class="data-calculator-number" data-keybinding="2">2</button>
-    <button class="data-calculator-number" data-keybinding="3">3</button>
-    <button class="data-calculator-operation" data-keybinding="*">*</button>
-    <button class="data-calculator-number" data-keybinding="4">4</button>
-    <button class="data-calculator-number" data-keybinding="5">5</button>
-    <button class="data-calculator-number" data-keybinding="6">6</button>
-    <button class="data-calculator-operation" data-keybinding="+">+</button>
-    <button class="data-calculator-number" data-keybinding="7">7</button>
-    <button class="data-calculator-number" data-keybinding="8">8</button>
-    <button class="data-calculator-number" data-keybinding="9">9</button>
-    <button class="data-calculator-operation" data-keybinding="-">-</button>
-    <button class="data-calculator-number" data-keybinding=".">.</button>
-    <button class="data-calculator-number" data-keybinding="0">0</button>
-    <button class="data-calculator-equals span-two" data-keybinding="=">=</button>
+    <button type="button" class="data-calculator-all-clear block-calculator-span-two btn btn-outline-danger" data-keybinding="Delete">AC</button>
+    <button type="button" class="data-calculator-delete btn btn-outline-secondary" data-keybinding="Backspace">DEL</button>
+    <button type="button" class="data-calculator-operation btn btn-secondary" data-keybinding="/">÷</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="1">1</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="2">2</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="3">3</button>
+    <button type="button" class="data-calculator-operation btn btn-secondary" data-keybinding="*">*</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="4">4</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="5">5</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="6">6</button>
+    <button type="button" class="data-calculator-operation btn btn-secondary" data-keybinding="+">+</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="7">7</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="8">8</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="9">9</button>
+    <button type="button" class="data-calculator-operation btn btn-secondary" data-keybinding="-">-</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding=".">.</button>
+    <button type="button" class="data-calculator-number btn btn-light" data-keybinding="0">0</button>
+    <button type="button" class="data-calculator-equals block-calculator-span-two btn btn-primary" data-keybinding="=">=</button>
 </div>
