@@ -26,10 +26,19 @@ namespace block_simple_calculator\output;
 
 use plugin_renderer_base;
 
-defined('MOODLE_INTERNAL') || die;
-
+/**
+ * Block simple calculator renderer.
+ *
+ * @package     block_simple_calculator
+ * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class renderer extends plugin_renderer_base {
-
+    /**
+     * Render the calculator.
+     *
+     * @return string HTML
+     */
     public function render_calculator() {
         $data = [];
         return parent::render_from_template('block_simple_calculator/simple_calculator', $data);

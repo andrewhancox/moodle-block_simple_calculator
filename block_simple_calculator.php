@@ -22,9 +22,17 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
+/**
+ * Simple calculator block.
+ *
+ * @package     block_simple_calculator
+ * @copyright   2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_simple_calculator extends block_base {
+    /** @var int Display the calculator inline within the block. */
     const DISPLAYMODE_INLINE = 10;
+    /** @var int Display the calculator in a popup. */
     const DISPLAYMODE_POPUP = 20;
 
     /**
@@ -78,6 +86,11 @@ class block_simple_calculator extends block_base {
         return $this->content;
     }
 
+    /**
+     * Is the block empty? In popup mode the block has no content of its own.
+     *
+     * @return bool
+     */
     public function is_empty() {
         return parent::is_empty() && (!empty($this->config->displaymode) && $this->config->displaymode == self::DISPLAYMODE_POPUP);
     }
@@ -121,7 +134,7 @@ class block_simple_calculator extends block_base {
      *
      * @return boolean
      */
-    public function _self_test() {
+    public function _self_test() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         return true;
     }
 }
