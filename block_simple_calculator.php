@@ -129,14 +129,4 @@ class block_simple_calculator extends block_base {
     public function applicable_formats() {
         return ['all' => true];
     }
-
-    /**
-     * Tests if this block has been implemented correctly.
-     * Also, $errors isn't used right now
-     *
-     * @return boolean
-     */
-    public function _self_test() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-        return true;
-    }
 }
