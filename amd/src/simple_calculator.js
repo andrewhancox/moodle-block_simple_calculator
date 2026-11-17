@@ -13,101 +13,153 @@
 // You should have received a copy of the GNU General Public License along with
 // Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-define(['jquery'], function($) {
-    var calculator = {
-        init: function() {
-            var currentOperand = '';
-            var previousOperand = '';
-            var operation = null;
-            // NUMBER CLICKS
-            $(document).on('click', '.data-calculator-number', function() {
-                var number = $(this).text();
-                if (number === '.' && currentOperand.includes('.')) {
-                    calculator.updateDisplay(currentOperand, operation, previousOperand);
-                } else {
-                    currentOperand = currentOperand.toString() + number.toString();
-                    calculator.updateDisplay(currentOperand, operation, previousOperand);
-                }
-            });
-            // CLEAR DISPLAY
-            $(document).on('click', '.data-calculator-all-clear', function() {
-                currentOperand = '';
-                previousOperand = '';
-                operation = null;
-                calculator.updateDisplay(currentOperand, operation, previousOperand);
-            });
-            // DELETE NUMBER
-            $(document).on('click', '.data-calculator-delete', function() {
-                currentOperand = currentOperand.toString().slice(0, -1);
-                calculator.updateDisplay(currentOperand, operation, previousOperand);
-            });
-            // CALCULATOR OPS BUTTON
-            $(document).on('click', '.data-calculator-operation', function() {
-                if (operation !== null && currentOperand !== '' && previousOperand !== '') {
-                    $.calc('operation');
-                    previousOperand = currentOperand;
-                    currentOperand = '';
-                    calculator.updateDisplay(currentOperand, operation, previousOperand);
-                }
-                operation = $(this).text();
-                if (currentOperand !== '') {
-                    if (previousOperand !== '') {
-                        $.calc('operation');
-                    }
-                    previousOperand = currentOperand;
-                    currentOperand = '';
-                    calculator.updateDisplay(currentOperand, operation, previousOperand);
-                } else if (currentOperand === '') {
-                    if (previousOperand !== '') {
-                        calculator.updateDisplay(currentOperand, operation, previousOperand);
-                    }
-                }
-            });
-            // EQ BUTTON CLICK
-            $(document).on('click', '.data-calculator-equals', function() {
-                if (currentOperand !== '') {
-                    if (previousOperand !== '') {
-                        $.calc('equal');
-                    }
-                    calculator.updateDisplay(currentOperand, operation, previousOperand);
-                }
-            });
-            // CALCULATION
-            $.calc = function(feature) {
-                let finalValue;
-                var invalid = false;
-                const previous = parseFloat(previousOperand);
-                const current = parseFloat(currentOperand);
-                if (operation === '+') {
-                    finalValue = previous + current;
-                } else if (operation === '-') {
-                    finalValue = previous - current;
-                } else if (operation === '*') {
-                    finalValue = previous * current;
-                } else if (operation === '÷') {
-                    finalValue = previous / current;
-                } else {
-                    invalid = true;
-                }
-                if (!invalid) {
-                    currentOperand = finalValue;
-                    if (feature === 'equal') {
-                        operation = null;
-                        previousOperand = '';
-                    }
-                }
-            };
-        },
-        updateDisplay: function(currentOperand, operation, previousOperand) {
-            var previousValue = '';
-            $("#data-block-calculator-current-operand").text(currentOperand);
-            if (operation) {
-                previousValue = previousOperand + operation;
-                $("#data-block-calculator-previous-operand").text(previousValue);
-            } else {
-                $("#data-block-calculator-previous-operand").text('');
-            }
+/**
+ * Calculator logic shared by the inline and popup display modes.
+ *
+ * @module     block_simple_calculator/simple_calculator
+ * @copyright  2020 A K M Safat Shahin <safatshahin@gmail.com>
+ * @copyright  2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+let initialised = false;
+let currentOperand = '';
+let previousOperand = '';
+let operation = null;
+
+/**
+ * Show the current state of the calculation.
+ */
+const updateDisplay = () => {
+    const current = document.getElementById('data-block-calculator-current-operand');
+    const previous = document.getElementById('data-block-calculator-previous-operand');
+    if (current) {
+        current.textContent = currentOperand;
+    }
+    if (previous) {
+        previous.textContent = operation ? previousOperand + operation : '';
+    }
+};
+
+/**
+ * Apply the pending operation to the previous and current operands.
+ *
+ * @param {Boolean} finished True when = was pressed, which also clears the pending operation.
+ */
+const calculate = (finished) => {
+    const previous = parseFloat(previousOperand);
+    const current = parseFloat(currentOperand);
+    let result;
+    if (operation === '+') {
+        result = previous + current;
+    } else if (operation === '-') {
+        result = previous - current;
+    } else if (operation === '*') {
+        result = previous * current;
+    } else if (operation === '÷') {
+        result = previous / current;
+    } else {
+        return;
+    }
+    currentOperand = result;
+    if (finished) {
+        operation = null;
+        previousOperand = '';
+    }
+};
+
+/**
+ * Handle a number or decimal point button.
+ *
+ * @param {String} number The digit or decimal point pressed.
+ */
+const pressNumber = (number) => {
+    if (number !== '.' || !currentOperand.toString().includes('.')) {
+        currentOperand = currentOperand.toString() + number;
+    }
+    updateDisplay();
+};
+
+/**
+ * Handle an operation button.
+ *
+ * @param {String} newOperation The operation pressed.
+ */
+const pressOperation = (newOperation) => {
+    if (operation !== null && currentOperand !== '' && previousOperand !== '') {
+        calculate(false);
+        previousOperand = currentOperand;
+        currentOperand = '';
+        updateDisplay();
+    }
+    operation = newOperation;
+    if (currentOperand !== '') {
+        if (previousOperand !== '') {
+            calculate(false);
         }
-    };
-    return calculator;
-});
+        previousOperand = currentOperand;
+        currentOperand = '';
+        updateDisplay();
+    } else if (previousOperand !== '') {
+        updateDisplay();
+    }
+};
+
+/**
+ * Handle the equals button.
+ */
+const pressEquals = () => {
+    if (currentOperand !== '') {
+        if (previousOperand !== '') {
+            calculate(true);
+        }
+        updateDisplay();
+    }
+};
+
+/**
+ * Clear the whole calculation.
+ */
+const clearAll = () => {
+    currentOperand = '';
+    previousOperand = '';
+    operation = null;
+    updateDisplay();
+};
+
+/**
+ * Remove the last character of the current entry.
+ */
+const deleteLast = () => {
+    currentOperand = currentOperand.toString().slice(0, -1);
+    updateDisplay();
+};
+
+/**
+ * Listen for clicks on the calculator buttons.
+ */
+export const init = () => {
+    if (initialised) {
+        return;
+    }
+    initialised = true;
+
+    document.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (!button) {
+            return;
+        }
+        const value = button.textContent.trim();
+        if (button.classList.contains('data-calculator-number')) {
+            pressNumber(value);
+        } else if (button.classList.contains('data-calculator-operation')) {
+            pressOperation(value);
+        } else if (button.classList.contains('data-calculator-equals')) {
+            pressEquals();
+        } else if (button.classList.contains('data-calculator-all-clear')) {
+            clearAll();
+        } else if (button.classList.contains('data-calculator-delete')) {
+            deleteLast();
+        }
+    });
+};

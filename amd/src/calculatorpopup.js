@@ -13,49 +13,108 @@
 // You should have received a copy of the GNU General Public License along with
 // Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-define(
-    ['jquery', 'core/templates', 'core/notification', 'core/modal_factory', 'core/modal_events', 'jqueryui'],
-    function ($, templates, notification, ModalFactory, ModalEvents, jqueryui) {
-        var calculatorpopup = {
-            init: function () {
-                var buttonpromise = templates.render('block_simple_calculator/popupbutton', {});
-                buttonpromise.done(function (html) {
-                    var container = $('#page-footer');
-                    container.before(html);
-                }).fail(notification.exception);
+/**
+ * Adds a button to the page that opens the calculator in a draggable popup.
+ *
+ * @module     block_simple_calculator/calculatorpopup
+ * @copyright  2021 Andrew Hancox <andrew_dc_hancox@googlemail.com>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-                $(document).keydown(function(e) {
-                    if (e.key == 'Enter') {
-                        e.key = '=';
-                    }
-                    $('[data-keybinding="' + e.key + '"]').trigger('click');
-                });
+import Templates from 'core/templates';
+import Notification from 'core/notification';
+import ModalFactory from 'core/modal_factory';
+import ModalEvents from 'core/modal_events';
 
-                var calculatorpromise = templates.render('block_simple_calculator/simple_calculator', {});
-                calculatorpromise.done(function (calculator) {
-                    $(document).on('click', '#block-calculator-output-popupbutton', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
+/**
+ * Let the user move the popup by dragging its header.
+ *
+ * @param {HTMLElement} root The modal's root element.
+ */
+const makeDraggable = (root) => {
+    const header = root.querySelector('.modal-header');
+    const dialog = root.querySelector('.modal-dialog');
+    if (!header || !dialog) {
+        return;
+    }
+    header.style.cursor = 'move';
 
-                        ModalFactory.create({
-                            title: '',
-                            body: calculator,
-                            type: ModalFactory.types.DEFAULT,
-                        }).then(function (modal) {
-                            modal.show();
+    let offsetX = 0;
+    let offsetY = 0;
+    let startX = 0;
+    let startY = 0;
 
-                            $(modal.getRoot()).draggable({
-                                handle: ".modal-header"
-                            });
-
-                            modal.getRoot().on(ModalEvents.hidden, function() {
-                                $('[data-keybinding="Delete"]').trigger('click'); // Reset calculator state.
-                                modal.destroy();
-                            });
-                        });
-                    });
-                }).fail(notification.exception);
-            },
-        };
-        return calculatorpopup;
+    header.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 || e.target.closest('button')) {
+            return;
+        }
+        startX = e.clientX - offsetX;
+        startY = e.clientY - offsetY;
+        header.setPointerCapture(e.pointerId);
     });
+    header.addEventListener('pointermove', (e) => {
+        if (!header.hasPointerCapture(e.pointerId)) {
+            return;
+        }
+        offsetX = e.clientX - startX;
+        offsetY = e.clientY - startY;
+        dialog.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+    });
+    header.addEventListener('pointerup', (e) => {
+        if (header.hasPointerCapture(e.pointerId)) {
+            header.releasePointerCapture(e.pointerId);
+        }
+    });
+};
+
+/**
+ * Press the calculator button bound to a key, if there is one on the page.
+ *
+ * @param {KeyboardEvent} e The key press.
+ */
+const handleKey = (e) => {
+    const key = e.key === 'Enter' ? '=' : e.key;
+    document.querySelectorAll(`[data-keybinding="${CSS.escape(key)}"]`).forEach((button) => button.click());
+};
+
+/**
+ * Add the popup button to the page and open the calculator when it is clicked.
+ */
+export const init = () => {
+    Templates.render('block_simple_calculator/popupbutton', {}).then((html) => {
+        const footer = document.getElementById('page-footer');
+        if (footer) {
+            footer.insertAdjacentHTML('beforebegin', html);
+        }
+        return html;
+    }).catch(Notification.exception);
+
+    document.addEventListener('keydown', handleKey);
+
+    Templates.render('block_simple_calculator/simple_calculator', {}).then((calculator) => {
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#block-calculator-output-popupbutton')) {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+
+            ModalFactory.create({
+                title: '',
+                body: calculator,
+                type: ModalFactory.types.DEFAULT,
+            }).then((modal) => {
+                modal.show();
+                makeDraggable(modal.getRoot()[0]);
+
+                // Modal events are fired through the modal's own API, so listen with it too.
+                modal.getRoot().on(ModalEvents.hidden, () => {
+                    document.querySelectorAll('[data-keybinding="Delete"]').forEach((button) => button.click());
+                    modal.destroy();
+                });
+                return modal;
+            }).catch(Notification.exception);
+        });
+        return calculator;
+    }).catch(Notification.exception);
+};
