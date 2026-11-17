@@ -27,6 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_simple_calculator';
 $plugin->release = '1.2.0';
-$plugin->version = 2026111701;
-$plugin->requires = 2024100700; // Moodle 4.5.
+$plugin->version = 2026111702;
+$plugin->requires = 2025100600; // Moodle 5.1.
 $plugin->maturity = MATURITY_STABLE;

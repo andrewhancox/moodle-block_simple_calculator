@@ -1,8 +1,6 @@
-/* Bootstrap has no CSS grid utilities that work in both Bootstrap 4 and 5, so lay the keypad out here. */
+/* Bootstrap provides d-grid and gap-1 but not the column layout itself. */
 .block-calculator-grid {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: .25rem;
     max-width: 20rem;
 }
 
@@ -15,7 +13,7 @@
     min-height: 4.5rem;
 }
 
-/* Bootstrap 4 has no bottom/end position utilities, so place the popup button here. */
+/* Bootstrap's position utilities only offer 0, 50% and 100%, so place the popup button here. */
 #block-calculator-output-popupbutton {
     bottom: 75px;
     right: 0;
