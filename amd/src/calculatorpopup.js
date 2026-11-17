@@ -23,7 +23,7 @@
 
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import ModalFactory from 'core/modal_factory';
+import Modal from 'core/modal';
 import ModalEvents from 'core/modal_events';
 
 /**
@@ -99,10 +99,9 @@ export const init = () => {
             e.preventDefault();
             e.stopPropagation();
 
-            ModalFactory.create({
+            Modal.create({
                 title: '',
                 body: calculator,
-                type: ModalFactory.types.DEFAULT,
             }).then((modal) => {
                 modal.show();
                 makeDraggable(modal.getRoot()[0]);

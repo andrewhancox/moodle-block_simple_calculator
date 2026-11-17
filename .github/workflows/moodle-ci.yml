@@ -19,15 +19,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The lowest and highest PHP versions Moodle 4.1 supports, with the
+        # The lowest and highest PHP versions Moodle 4.5 supports, with the
         # PostgreSQL version Moodle's own CI uses for that branch.
         include:
-          - moodle-branch: 'MOODLE_401_STABLE'
-            php: '7.4'
-            pgsql: '12'
-          - moodle-branch: 'MOODLE_401_STABLE'
+          - moodle-branch: 'MOODLE_405_STABLE'
             php: '8.1'
-            pgsql: '12'
+            pgsql: '13'
+          - moodle-branch: 'MOODLE_405_STABLE'
+            php: '8.3'
+            pgsql: '13'
 
     steps:
       - name: Check out repository code
