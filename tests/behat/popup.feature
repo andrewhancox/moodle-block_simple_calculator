@@ -48,3 +48,16 @@ Feature: Use the calculator block as a popup
     And I should see "3" in the ".modal-dialog #data-block-calculator-current-operand" "css_element"
     And I press the delete key
     And I should not see "3" in the ".modal-dialog #data-block-calculator-current-operand" "css_element"
+
+  Scenario: Open the popup calculator while the block drawer is open
+    Given the following "blocks" exist:
+      | blockname         | contextlevel    | reference | pagetypepattern | defaultregion |
+      | calendar_upcoming | Activity module | page1     | mod-page-*      | side-pre      |
+    And I am on the "Test page" "page activity" page
+    And I should see "Upcoming events"
+    When I click on "Open the calculator" "link"
+    And I click on "4" "button" in the ".modal-dialog" "css_element"
+    And I click on "*" "button" in the ".modal-dialog" "css_element"
+    And I click on "5" "button" in the ".modal-dialog" "css_element"
+    And I click on "=" "button" in the ".modal-dialog" "css_element"
+    Then I should see "20" in the ".modal-dialog #data-block-calculator-current-operand" "css_element"
