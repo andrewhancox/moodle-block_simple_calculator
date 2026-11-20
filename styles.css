@@ -17,6 +17,14 @@
 #block-calculator-output-popupbutton {
     bottom: 75px;
     right: 0;
+    transition: right .2s;
+}
+
+/* Keep the button clear of the block drawer when it sits beside the page (Bootstrap's lg breakpoint and up). */
+@media (min-width: 992px) {
+    #page.drawers.show-drawer-right #block-calculator-output-popupbutton {
+        right: 315px;
+    }
 }
 
 /* Core caps icon sizes, and the pix helper can't add a size class. */
